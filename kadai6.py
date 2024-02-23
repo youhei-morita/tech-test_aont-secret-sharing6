@@ -36,7 +36,9 @@ def split_message_to_bytes(message, num_blocks):
 
     return blocks
 
-# テスト用メッセージ
+blocks = []
+
+# 平文
 m = "This message is for practicing AONT distributed processing."
 # 分割するブロック数
 num_blocks = 5
