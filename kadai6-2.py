@@ -1,4 +1,4 @@
-mport os
+import os
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 
@@ -26,9 +26,9 @@ def split_message_to_bytes(message, num_blocks):
 
 blocks = []
 m = "This message is for practicing AONT distributed processing."
-num_blocks = 5
+s = 5
 
-blocks_bytes = split_message_to_bytes(m, num_blocks)
+blocks_bytes = split_message_to_bytes(m, s)
 
 for i, block_bytes in enumerate(blocks_bytes):
     print(f"m_{i+1}: {block_bytes}")
@@ -56,11 +56,6 @@ def Enc(key, plaintext):
     ciphertext = encryptor.update(padded_plaintext) + encryptor.finalize()
     
     return iv + ciphertext
-
-key = b'\x00' * 16
-m = b'This message is for practicing AONT distributed processing.'
-encrypted_data = Enc(key, m)
-print("任意の共通鍵暗号化:", encrypted_data)
 
 m2_blocks = []
 for i, block in enumerate(blocks_bytes, start=1):
@@ -102,6 +97,12 @@ def xor_bytes(bytes_list):
 result = xor_bytes([m2_splus1] + hash_values)
 print("復号された共通鍵:", result)
 
+# 共通鍵が一致しているかどうかを判定
+if k == result:
+    print("共通鍵が一致しています。")
+else:
+    print("共通鍵が一致していません。")
+
 decrypted_blocks = []
 for i, m2_block in enumerate(m2_blocks, start=1):
     decrypted_block= bytes(a ^ b for a, b in zip(m2_block, result))   
@@ -109,4 +110,4 @@ for i, m2_block in enumerate(m2_blocks, start=1):
     decrypted_blocks.append(decrypted_block)
 
 decrypted_message = b"".join(decrypted_block for decrypted_block in decrypted_blocks)
-print("復号されたメッセージ:", decrypted_message.decode)
+print("復号されたメッセージ:", decrypted_message)
